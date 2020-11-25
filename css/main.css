@@ -574,10 +574,15 @@ label.error {
 .logo {
 	align-self: flex-start;
 	height: 15.4rem;
-	transition: height .3s;
+	width: 14.9rem;
+	-webkit-transition: all .3s;
+	-moz-transition: all .3s;
+	-ms-transition: all .3s;
+	transition: all .3s;
 }
 .logo.scrolled {
 	height: 100%;
+	width: 8.7rem;
 }
 .logo img {
 	box-shadow: 0 0 40px rgba(24,37,37,0.26);
@@ -586,7 +591,7 @@ label.error {
 	-moz-transition: all .3s;
 	-ms-transition: all .3s;
 	transition: all .3s;
-	width: auto;
+	width: 100%;
 }
 .lang {
 	margin: 0;
