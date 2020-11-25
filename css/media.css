@@ -289,12 +289,18 @@
 	body.sushi .product_card:before {
 		background: none;
 	}
+	body.sushi .product_item--descr p {
+		margin-bottom: 0;
+	}
 	body.sushi .product_card--outcome {
 		-webkit-box-orient: vertical;
 		-webkit-box-direction: normal;
 		-webkit-flex-direction: column;
 		-ms-flex-direction: column;
 		flex-direction: column;
+	}
+	body.sushi .product_item--descr {
+		height: auto;
 	}
 	body.sushi .product_card--outcome_result {
 		width: 100%;
