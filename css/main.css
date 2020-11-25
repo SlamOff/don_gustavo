@@ -1349,6 +1349,7 @@ body.sushi .product {
 .product_card--weight span:before {
 	content: "";
 	background-image: url('../img/weight.png');
+	background-size: cover;
 	display: inline-block;
 	width: 2.2rem;
 	height: 2.2rem;
@@ -1358,6 +1359,9 @@ body.sushi .product {
 	top: -1px;
 }
 .product_card--name_mobile {
+	display: none;
+}
+.product_card--weight.mobile {
 	display: none;
 }
 .product_card--descr {

@@ -5,6 +5,9 @@
 	html {
 		font-size: 9px;
 	}
+	body.sushi .product_card--final {
+		margin: 2rem 0;
+	}
 	section h3 br,
 	.region .region_col {
 		-webkit-box-flex: 0;
@@ -69,6 +72,9 @@
 @media only screen and (max-width : 991px) {
 	footer .row div  {
 		text-align: center;
+	}
+	body.sushi .product_card--final {
+		margin: 1.8rem 0;
 	}
 	.main_banner {
 		padding-bottom: 0;
@@ -279,6 +285,33 @@
 @media only screen and (max-width : 767px) {
 	.product_item--pict {
 		height: auto;
+	}
+	body.sushi .product_card:before {
+		background: none;
+	}
+	body.sushi .product_card--outcome {
+		-webkit-box-orient: vertical;
+		-webkit-box-direction: normal;
+		-webkit-flex-direction: column;
+		-ms-flex-direction: column;
+		flex-direction: column;
+	}
+	body.sushi .product_card--outcome_result {
+		width: 100%;
+	}
+	.product_card--weight {
+		font-size: 18px;
+	}
+	.product_card--weight.desktop {
+		display: none;
+	}
+	.product_card--weight.mobile {
+		display: block;
+		margin: 25px 0 10px;
+	}
+	.product_card--weight span:before {
+		width: 22px;
+		height: 22px;
 	}
 	.product_card--pict img {
 		object-fit: unset;
