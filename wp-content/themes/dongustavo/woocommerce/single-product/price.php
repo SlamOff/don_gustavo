@@ -20,6 +20,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $product;
+$translations = new GustavoTranslations();
 
+$variations = ($product->is_type( 'variable' )) ? $product->get_available_variations() : null;
 ?>
-<p class="<?php echo esc_attr( apply_filters( 'woocommerce_product_price_class', 'price' ) ); ?>"><?php echo $product->get_price_html(); ?></p>
+<?php if(is_single()) : ?>
+	<div class="product_card--outcome_result<?php if(!is_array($variations) or count($variations) > 1) : ?> hidden<?php endif; ?>">
+		<h5 class="section_title"><?php echo $translations->getTranslation(["global", 'total']); ?></h5>
+		<div class="woocommerce-variation-price"><?php echo $product->get_price_html(); ?></div>
+		грн
+	</div>
+<?php else: ?>
+	<p class="<?php echo esc_attr( apply_filters( 'woocommerce_product_price_class', 'price' ) ); ?> test"><?php echo $product->get_price_html(); ?></p>
+<?php endif; ?>

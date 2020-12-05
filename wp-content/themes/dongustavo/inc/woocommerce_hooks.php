@@ -1,4 +1,20 @@
 <?php
+require_once get_template_directory() . '/classes/class-Cart.php';
+
+
+$currentLang = 'uk';
+$langs = pll_the_languages( array( 'raw' => 1 ) );
+if(!empty($langs) and is_array($langs)) {
+	foreach($langs as $l) {
+		if($l['current_lang']) {
+			$currentLang = $l['locale'];
+		}
+	}
+}
+
+
+
+
 add_action('wp_ajax_woocommerce_ajax_add_to_cart', 'woocommerce_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_woocommerce_ajax_add_to_cart', 'woocommerce_ajax_add_to_cart');
 
@@ -85,5 +101,68 @@ function woocommerce_ajax_change_quantity() {
 		echo wp_send_json($cart->cart_contents);
 	}
 
+	wp_die();
+}
+
+// To change add to cart text on single product page
+add_filter( 'woocommerce_product_single_add_to_cart_text', 'woocommerce_custom_single_add_to_cart_text' );
+function woocommerce_custom_single_add_to_cart_text() {
+	global $currentLang;
+	if($currentLang == 'uk') {
+		return __( 'В кошик', 'woocommerce' );
+	} else {
+		return __( 'В корзину', 'woocommerce' );
+	}
+
+}
+
+// To change add to cart text on product archives(Collection) page
+add_filter( 'woocommerce_product_add_to_cart_text', 'woocommerce_custom_product_add_to_cart_text' );
+function woocommerce_custom_product_add_to_cart_text() {
+	global $currentLang;
+	if($currentLang == 'uk') {
+		return __( 'В кошик', 'woocommerce' );
+	} else {
+		return __( 'В корзину', 'woocommerce' );
+	}
+}
+
+add_action('wp_ajax_dongustavo_cart_ajax_order', 'dongustavo_cart_ajax_order');
+add_action('wp_ajax_nopriv_dongustavo_cart_ajax_order', 'dongustavo_cart_ajax_order');
+
+
+function dongustavo_cart_ajax_order() {
+	$cart = WC()->instance()->cart;
+	$userData = $_POST['userData'];
+	$order = $cart->get_cart();
+	$cartClass = new Cart($userData, $order);
+
+	echo wp_send_json($cartClass->send());
+
+	wp_die();
+}
+
+add_action('wp_ajax_dongustavo_cart_apply_coupon', 'dongustavo_cart_apply_coupon');
+add_action('wp_ajax_nopriv_dongustavo_cart_apply_coupon', 'dongustavo_cart_apply_coupon');
+
+function dongustavo_cart_apply_coupon() {
+	$ret = '{"status": 0}';
+	if(!empty($_POST['couponcode'])) {
+		$couponcode = stripslashes($_POST['couponcode']);
+		WC()->cart->remove_coupons();
+		$ret = '{"status" :'.WC()->cart->add_discount( $couponcode ).'}';
+	}
+	echo $ret;
+	wp_die();
+}
+
+add_action('wp_ajax_dongustavo_cart_total', 'dongustavo_cart_total');
+add_action('wp_ajax_nopriv_dongustavo_cart_total', 'dongustavo_cart_total');
+
+function dongustavo_cart_total() {
+	$ret = [
+		'html' => WC()->cart->get_cart_total()
+	];
+	echo wp_send_json($ret);;
 	wp_die();
 }

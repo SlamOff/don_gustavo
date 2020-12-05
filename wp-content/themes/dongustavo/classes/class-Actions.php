@@ -1,9 +1,10 @@
 <?php
-
+require_once get_template_directory() . '/classes/class-GustavoTranslations.php';
 
 class Actions {
 	private $query = [];
 	private $type = 'slider';
+	private $translations;
 
 	public function __construct($type = 'slider') {
 		$this->query = [
@@ -13,7 +14,7 @@ class Actions {
 			'posts_per_page' => 0
 		];
 		$this->type = $type;
-
+		$this->translations = new GustavoTranslations();
 	}
 
 
@@ -40,6 +41,7 @@ class Actions {
 		}
 		return $html;
 	}
+
 	private function renderListHtml() {
 		$posts = get_posts($this->query);
 		$html = '';
@@ -61,6 +63,24 @@ class Actions {
 			}
 			$html .= '</div>
 				</div>';
+		}
+		return $html;
+	}
+
+	public function getCoupons() {
+		$html = null;
+		$posts = get_posts($this->query);
+		switch($this->type) {
+			case 'array':
+				$html = $posts;
+				break;
+			case 'list':
+				$html = '<ul class="product_card--promo_list">';
+				foreach($posts as $post) {
+					$html .= "<li>{$post->post_title}</li>";
+				}
+				$html .= '</ul>';
+				break;
 		}
 		return $html;
 	}

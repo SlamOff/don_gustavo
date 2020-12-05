@@ -11,12 +11,25 @@
  */
 
 defined( 'ABSPATH' ) || exit;
-
+require_once get_template_directory() . '/classes/class-GustavoTranslations.php';
+$translations = new GustavoTranslations();
+global $product;
+$variations = $product->get_available_variations();
 ?>
 <script type="text/template" id="tmpl-variation-template">
-	<div class="woocommerce-variation-description">{{{ data.variation.variation_description }}}</div>
-	<div class="woocommerce-variation-price">{{{ data.variation.price_html }}}</div>
-	<div class="woocommerce-variation-availability">{{{ data.variation.availability_html }}}</div>
+
+	<?php  if(is_single()) : ?>
+
+			<div class="product_card--outcome_result<?php if(count($variations) == 1) : ?> hidden<?php endif; ?>">
+				<h5 class="section_title"><?php echo $translations->getTranslation(["global", 'total']); ?></h5>
+				<div class="woocommerce-variation-price">{{{ data.variation.price_html }}}</div>
+				грн
+			</div>
+
+	<?php else: ?>
+		<div class="woocommerce-variation-price">{{{ data.variation.price_html }}}</div>
+	<?php endif; ?>
+
 </script>
 <script type="text/template" id="tmpl-unavailable-variation-template">
 	<p><?php esc_html_e( 'Sorry, this product is unavailable. Please choose a different combination.', 'woocommerce' ); ?></p>

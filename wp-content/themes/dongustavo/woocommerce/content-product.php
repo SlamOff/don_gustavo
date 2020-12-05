@@ -25,6 +25,7 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 }
 $category = get_term($product->get_category_ids()[0], 'product_cat')->slug;
 $isPizza = in_array($category, ['pizza', 'pizza-ru']);
+$isDrink = in_array($category, ['drinks', 'drinks-ru']);
 //var_dump($product);
 //die;
 $product_type = $product->get_type();
@@ -77,6 +78,31 @@ if($variations) {
 
 
 ?>
+<?php if($isDrink): ?>
+	<div class="col-md-3 drink-item">
+		<div class="often_item">
+			<img src="<?php the_post_thumbnail_url(); ?>" alt="<?php the_title(); ?>">
+		</div>
+		<h4 class="often_title"><?php the_title(); ?></h4>
+		<div class="often_item--footer">
+			<div class="often_item--footer_price">
+				<?php echo $product->get_price();?> грн
+			</div>
+			<div class="choose">
+				<div class="g-quantity">
+					<div class="btn_minus btn_action">-</div>
+					<input disabled="" type="text" value="1" name="quantity">
+					<div class="btn_plus btn_action">+</div>
+				</div>
+				<?php
+
+					do_action( 'woocommerce_after_shop_loop_item' );
+				?>
+			</div>
+
+		</div>
+	</div>
+<?php else: ?>
 <div class="col-sm-6 col-md-4">
 	<div class="product_item" data-weight="[<?php echo $dataWeight ?>]" data-price="[<?php echo $dataPrice ?>]">
 		<a href="<?php echo $product->get_permalink(); ?>">
@@ -171,3 +197,4 @@ if($variations) {
 
 	</div>
 </div>
+<?php endif;

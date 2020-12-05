@@ -7,8 +7,8 @@
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  *
  * @package WordPress
- * @subpackage Twenty_Twenty
- * @since Twenty Twenty 1.0
+ * @subpackage Don_Gustavo
+ * @since Don Gustavo 1.0
  */
 
 ?>

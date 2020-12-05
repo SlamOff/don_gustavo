@@ -4,19 +4,19 @@ class AddToCart{
 	}
 	
 	prepareData($thisbutton) {
-		let $form = $thisbutton.closest('form.cart'),
-			id = $thisbutton.val(),
-			product_qty = $form.find('input[name=quantity]').val() || 1,
-			product_id = $form.find('input[name=product_id]').val() || id,
-			variation_id = $form.find('input[name=variation_id]').val() || 0;
+		let $form = $thisbutton.closest('form.cart');
 		
-		return {
-			action: 'woocommerce_ajax_add_to_cart',
-			product_id: product_id,
-			product_sku: '',
-			quantity: product_qty,
-			variation_id: variation_id,
+		let data = {
+			action: 'woocommerce_ajax_add_to_cart'
 		}
+		$form.serializeArray().forEach(el => {
+			if(el.name !== "add-to-cart") {
+				data[el.name] = el.value;
+			}
+			
+		})
+		
+		return data;
 	}
 	
 	sendRequest(data, before, complete, callback) {
@@ -75,6 +75,7 @@ class AddToCart{
 		jQuery(document).on('click', '.single_add_to_cart_button', (e) => {
 			e.preventDefault();
 			let $thisbutton = jQuery(e.currentTarget);
+			
 			let data = this.prepareData($thisbutton);
 			
 			jQuery(document.body).trigger('adding_to_cart', [$thisbutton, data]);

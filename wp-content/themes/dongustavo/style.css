@@ -359,7 +359,9 @@ ul {
 }
 .btn_main,
 .woocommerce div.product .product_item form.cart .button,
-.woocommerce .product_item a.button {
+.woocommerce .product_item a.button,
+.woocommerce .drink-item a.button,
+.woocommerce .product button.button.single_add_to_cart_button {
 	text-transform: uppercase;
 	font-weight: bold;
 	font-size: 1.4rem;
@@ -383,14 +385,25 @@ ul {
 }
 .btn_main:hover,
 .woocommerce .product_item a.button:hover,
-.woocommerce div.product .product_item form.cart .button:hover {
+.woocommerce .drink-item a.button:hover,
+.woocommerce div.product .product_item form.cart .button:hover,
+.woocommerce .product button.button.single_add_to_cart_button:hover {
 	color: #fff;
 	box-shadow: none;
 }
 .btn_main:focus,
 .woocommerce .product_item a.button:active,
-.woocommerce div.product .product_item form.cart .button:focus {
+.woocommerce .drink-item a.button:active,
+.woocommerce div.product .product_item form.cart .button:focus,
+.woocommerce .product button.button.single_add_to_cart_button:focus {
 	color: #fff;
+}
+.woocommerce .drink-item .choose {
+	width: 60%;
+}
+.woocommerce .product_item a.button,
+.woocommerce .drink-item a.button {
+	line-height: 4rem;
 }
 .form {
 	text-align: center;
@@ -1047,13 +1060,13 @@ label.error {
 .region .region_address p:last-of-type {
 	margin-bottom: 0;
 }
-.product {
+.product-list {
 	padding: 10rem 0 19rem;
 	background-image: url('img/product-pizza-bg.jpg');
 	background-position: center 14rem;
 	background-repeat: no-repeat;
 }
-body.sushi .product {
+body.sushi .product-list {
 	background-image: url('img/product-sushi-bg.jpg');
 	background-position: center 43rem;
 }
@@ -1330,7 +1343,8 @@ body.sushi .product {
 
 .woocommerce div.product .product_item form.cart .button,
 .product_item .btn_main_product,
-.woocommerce .product_item a.button {
+.woocommerce .product_item a.single_add_to_cart_button,
+.woocommerce .product .single_add_to_cart_button {
 	padding: initial;
 	width: 100%;
 	position: relative;
@@ -1340,14 +1354,30 @@ body.sushi .product {
 .product_item .btn_main_product.invisible {
 	visibility: hidden;
 }
-.woocommerce div.product p.price,
-.woocommerce div.product span.price,
-.woocommerce div.product form.cart .variations,
-.woocommerce div.product form.cart div.quantity,
-.woocommerce div.product a.added_to_cart,
+.woocommerce div.product-list p.price,
+.woocommerce div.product-list span.price,
+.woocommerce div.product-list form.cart .variations,
+.woocommerce div.product-list form.cart div.quantity,
+.woocommerce div.product-list a.added_to_cart,
 .woocommerce-notices-wrapper,
-.woocommerce-result-count {
+.product-list .wccpf-fields-container,
+.woocommerce-result-count,
+.product_card--info .product_meta,
+.product_card--info > .price,
+.product_card--info.variable  .variations,
+.woocommerce-Price-currencySymbol,
+.product_card--info .woocommerce-product-details__short-description {
 	display: none!important;
+}
+
+.single-product .wccpf-fields-container {
+	opacity: 0;
+	height: 0;
+	width: 0;
+	position: fixed;
+	left:0;
+	top:0;
+	overflow: hidden;
 }
 .woocommerce div.product form.cart {
 	margin-bottom: 0;
@@ -1367,6 +1397,12 @@ body.sushi .product {
 	width: 100%;
 	height: 100%;
 	object-fit: none;
+}
+.product_card--info .variations_form {
+	position: relative;
+}
+.product_card--info.variable .woocommerce-variation-price {
+
 }
 .product_card--name {
 	text-align: left;
@@ -1402,7 +1438,7 @@ body.sushi .product {
 .product_card--size_btn {
 	border: solid 1px #b3b3b3;
 	border-radius: 2rem;
-	width: 27.2rem;
+	width: 49%;
 	height: 4.2rem;
 	color: #b3b3b3;
 	font-size: 1.8rem;
@@ -1415,7 +1451,7 @@ body.sushi .product {
 	display: inline-block;
 }
 .product_card--size_btn:first-of-type {
-	margin-right: 1.5rem;
+	margin-right: 2%;
 }
 .product_card--size_btn.active {
 	color: #fff;
@@ -1709,9 +1745,21 @@ body.sushi .product {
 .product_card--outcome_result {
 	font-size: 3rem;
 	font-weight: bold;
+
 }
-.product_card--outcome_result h6 {
+.product_card--outcome_result h6,
+.woocommerce div.product p.price, .woocommerce div.product span.price {
 	color: #d24f44;
+	font-size: 3rem;
+}
+.product_card--info.variable .product_card--outcome_result {
+	color: #d24f44!important;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+.product_card--info.variable .product_card--outcome_result .section_title {
+	color: #1d2228!important;
 }
 .product_card--outcome_result * {
 	display: inline-block;

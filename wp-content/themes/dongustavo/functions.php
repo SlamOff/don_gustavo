@@ -32,6 +32,7 @@
  * as indicating support for post thumbnails.
  */
 function dongustavo_theme_support() {
+
 	add_theme_support( 'automatic-feed-links' );
 	/*
 		 * Let WordPress manage the document title.
@@ -93,10 +94,12 @@ function dongustavo_theme_support() {
 	add_theme_support( 'customize-selective-refresh-widgets' );
 }
 add_action( 'after_setup_theme', 'dongustavo_theme_support' );
+
 require get_template_directory() . '/inc/template-tags.php';
 
-//require get_template_directory() . '/classes/class-dongustavo-svg-icons.php';
-//require get_template_directory() . '/inc/svg-icons.php';
+
+
+
 /**
  * Register widget areas.
  *
@@ -117,6 +120,16 @@ function dongustavo_sidebar_registration() {
 		array_merge(
 			$shared_args,
 			array(
+				'name'        => __( 'HeaderMobile', 'dongustavo' ),
+				'id'          => 'header-mobile-widgets',
+				'description' => __( 'Widgets in this area will be displayed in the header.', 'dongustavo' ),
+			)
+		)
+	);
+	register_sidebar(
+		array_merge(
+			$shared_args,
+			array(
 				'name'        => __( 'Header', 'dongustavo' ),
 				'id'          => 'header-widgets',
 				'description' => __( 'Widgets in this area will be displayed in the header.', 'dongustavo' ),
@@ -129,6 +142,16 @@ function dongustavo_sidebar_registration() {
 			array(
 				'name'        => __( 'Main menu', 'dongustavo' ),
 				'id'          => 'main_menu',
+				'description' => __( 'Widgets in this area will be displayed in the header.', 'dongustavo' ),
+			)
+		)
+	);
+	register_sidebar(
+		array_merge(
+			$shared_args,
+			array(
+				'name'        => __( 'Main menu mobile', 'dongustavo' ),
+				'id'          => 'main_menu_mobile',
 				'description' => __( 'Widgets in this area will be displayed in the header.', 'dongustavo' ),
 			)
 		)
@@ -148,6 +171,9 @@ function dongustavo_sidebar_registration() {
 }
 
 add_action( 'widgets_init', 'dongustavo_sidebar_registration' );
+
+
+
 
 /**
  * Register and Enqueue Styles.
@@ -185,8 +211,12 @@ function dongustavo_register_styles() {
 	//END Libs
 
 	//Components
-	wp_enqueue_script( 'dongustavo-MainMenu', get_template_directory_uri(). '/front/js/components/MainMenu.js', array('jquery'), $theme_version, true );
-	wp_enqueue_script( 'dongustavo-AddToCart', get_template_directory_uri(). '/front/js/components/AddToCart.js', array('jquery'), $theme_version, true );
+	wp_enqueue_script( 'dongustavo-Base', get_template_directory_uri(). '/front/js/core/Base.js', array('jquery'), $theme_version, true );
+//	wp_enqueue_script( 'dongustavo-MainMenu', get_template_directory_uri(). '/front/js/components/MainMenu.js', array('jquery'), $theme_version, true );
+//	wp_enqueue_script( 'dongustavo-AddToCart', get_template_directory_uri(). '/front/js/components/AddToCart.js', array('jquery'), $theme_version, true );
+	wp_enqueue_script( 'dongustavo-Pdp', get_template_directory_uri(). '/front/js/components/Pdp.js', array('jquery', 'dongustavo-Base'), $theme_version, true );
+	wp_enqueue_script( 'dongustavo-Plp', get_template_directory_uri(). '/front/js/components/Plp.js', array('jquery', 'dongustavo-Base'), $theme_version, true );
+	wp_enqueue_script( 'dongustavo-Cart', get_template_directory_uri(). '/front/js/components/Cart.js', array('jquery', 'dongustavo-Base'), $theme_version, true );
 	//END Components
 
 
@@ -199,6 +229,7 @@ function dongustavo_register_styles() {
 }
 
 add_action( 'wp_enqueue_scripts', 'dongustavo_register_styles' );
+
 
 
 /**
@@ -228,6 +259,122 @@ function change_menu_item_args( $args, $item, $depth) {
 
 add_filter( 'nav_menu_item_args', 'change_menu_item_args', 10, 3 );
 
+// Register Custom Post Type
+function dongustavo_addings() {
+
+	$labels = array(
+		'name'                  => _x( 'Addings', 'Post Type General Name', 'dongustavo' ),
+		'singular_name'         => _x( 'Adding', 'Post Type Singular Name', 'dongustavo' ),
+		'menu_name'             => __( 'Додатки до піц', 'dongustavo' ),
+		'name_admin_bar'        => __( 'Додатки до піц', 'dongustavo' ),
+		'archives'              => __( 'Item Archives', 'dongustavo' ),
+		'attributes'            => __( 'Item Attributes', 'dongustavo' ),
+		'parent_item_colon'     => __( 'Parent Item:', 'dongustavo' ),
+		'all_items'             => __( 'All Items', 'dongustavo' ),
+		'add_new_item'          => __( 'Add New Item', 'dongustavo' ),
+		'add_new'               => __( 'Додати додаток', 'dongustavo' ),
+		'new_item'              => __( 'Новий додаток', 'dongustavo' ),
+		'edit_item'             => __( 'Редагувати', 'dongustavo' ),
+		'update_item'           => __( 'Оновити', 'dongustavo' ),
+		'view_item'             => __( 'Перегляд', 'dongustavo' ),
+		'view_items'            => __( 'View Items', 'dongustavo' ),
+		'search_items'          => __( 'Search Item', 'dongustavo' ),
+		'not_found'             => __( 'На знайдено', 'dongustavo' ),
+		'not_found_in_trash'    => __( 'Not found in Trash', 'dongustavo' ),
+		'featured_image'        => __( 'Зображення', 'dongustavo' ),
+		'set_featured_image'    => __( 'Додати зображення', 'dongustavo' ),
+		'remove_featured_image' => __( 'Видалити зображення', 'dongustavo' ),
+		'use_featured_image'    => __( 'Use as featured image', 'dongustavo' ),
+		'insert_into_item'      => __( 'Insert into item', 'dongustavo' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this item', 'dongustavo' ),
+		'items_list'            => __( 'Items list', 'dongustavo' ),
+		'items_list_navigation' => __( 'Items list navigation', 'dongustavo' ),
+		'filter_items_list'     => __( 'Filter items list', 'dongustavo' ),
+	);
+	$args = array(
+		'label'                 => __( 'Adding', 'dongustavo' ),
+		'description'           => __( 'Post Type Description', 'dongustavo' ),
+		'labels'                => $labels,
+		'supports'              => array( 'title', 'thumbnail', 'custom-fields' ),
+		'taxonomies'            => array( 'category' ),
+		'hierarchical'          => false,
+		'public'                => true,
+		'show_ui'               => true,
+		'show_in_menu'          => true,
+		'menu_position'         => 5,
+		'show_in_admin_bar'     => true,
+		'show_in_nav_menus'     => false,
+		'can_export'            => false,
+		'has_archive'           => false,
+		'exclude_from_search'   => true,
+		'publicly_queryable'    => true,
+		'capability_type'       => 'post',
+		'show_in_rest'          => false,
+	);
+	register_post_type( 'addings', $args );
+
+}
+add_action( 'init', 'dongustavo_addings', 0 );
+
+// Register Custom Post Type
+function dongustavo_addresses() {
+
+	$labels = array(
+		'name'                  => _x( 'Addresses', 'Post Type General Name', 'dongustavo' ),
+		'singular_name'         => _x( 'Address', 'Post Type Singular Name', 'dongustavo' ),
+		'menu_name'             => __( 'Адреси', 'dongustavo' ),
+		'name_admin_bar'        => __( 'Адреси', 'dongustavo' ),
+		'archives'              => __( 'Item Archives', 'dongustavo' ),
+		'attributes'            => __( 'Item Attributes', 'dongustavo' ),
+		'parent_item_colon'     => __( 'Parent Item:', 'dongustavo' ),
+		'all_items'             => __( 'All Items', 'dongustavo' ),
+		'add_new_item'          => __( 'Add New Item', 'dongustavo' ),
+		'add_new'               => __( 'Додати адресу', 'dongustavo' ),
+		'new_item'              => __( 'Нова адреса', 'dongustavo' ),
+		'edit_item'             => __( 'Редагувати', 'dongustavo' ),
+		'update_item'           => __( 'Оновити', 'dongustavo' ),
+		'view_item'             => __( 'Перегляд', 'dongustavo' ),
+		'view_items'            => __( 'View Items', 'dongustavo' ),
+		'search_items'          => __( 'Search Item', 'dongustavo' ),
+		'not_found'             => __( 'На знайдено', 'dongustavo' ),
+		'not_found_in_trash'    => __( 'Not found in Trash', 'dongustavo' ),
+		'featured_image'        => __( 'Зображення', 'dongustavo' ),
+		'set_featured_image'    => __( 'Додати зображення', 'dongustavo' ),
+		'remove_featured_image' => __( 'Видалити зображення', 'dongustavo' ),
+		'use_featured_image'    => __( 'Use as featured image', 'dongustavo' ),
+		'insert_into_item'      => __( 'Insert into item', 'dongustavo' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this item', 'dongustavo' ),
+		'items_list'            => __( 'Items list', 'dongustavo' ),
+		'items_list_navigation' => __( 'Items list navigation', 'dongustavo' ),
+		'filter_items_list'     => __( 'Filter items list', 'dongustavo' ),
+	);
+	$args = array(
+		'label'                 => __( 'Addresses', 'dongustavo' ),
+		'description'           => __( 'Post Type Description', 'dongustavo' ),
+		'labels'                => $labels,
+		'supports'              => array( 'title', 'custom-fields' ),
+		'taxonomies'            => array( 'category' ),
+		'hierarchical'          => false,
+		'public'                => true,
+		'show_ui'               => true,
+		'show_in_menu'          => true,
+		'menu_position'         => 5,
+		'show_in_admin_bar'     => true,
+		'show_in_nav_menus'     => false,
+		'can_export'            => false,
+		'has_archive'           => false,
+		'exclude_from_search'   => true,
+		'publicly_queryable'    => true,
+		'capability_type'       => 'post',
+		'show_in_rest'          => false,
+	);
+	register_post_type( 'addresses', $args );
+
+}
+add_action( 'init', 'dongustavo_addresses', 0 );
+
 require get_template_directory() . '/inc/shortCodes.php';
+require get_template_directory() . '/inc/image_sizes.php';
 require get_template_directory() . '/inc/woocommerce_hooks.php';
 require_once get_template_directory() . '/classes/class-GustavoTranslations.php';
+require_once get_template_directory() . '/classes/class-Additives.php';
