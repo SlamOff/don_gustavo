@@ -59,23 +59,12 @@ if ( $product->is_in_stock() ) : ?>
 					<div class="btn_plus btn_action btn_plus_product_sushi_card js-qty js-plus">+</div>
 				</div>
 			</div>
-			<div class="product_card--promo">
-				<div class="product_card--promo_dropdown">
-					<input id="promo" type="hidden" name="promo">
-					<span class="arrow"></span>
-					<div class="product_card--promo_value">Выберите промокод</div>
-					<?php
-					$actions = new Actions('list');
-					echo $actions->getCoupons();
-					?>
-				</div>
-			</div>
 		</div>
 		<div class="product_card--outcome">
 			<button type="submit" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button button alt btn_main"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
 
 			<div class="product_card--outcome_result">
-				<h5 class="section_title"><?php echo $translations->getTranslation(["global", 'total']); ?></h5>
+				<h5 class="section_title"><?php echo $translations->getTranslation(["global", 'total']); ?>:&nbsp;</h5>
 				<h6 class="section_title"><span id="product_total_price"><?php echo $product->regular_price ?></span>&nbsp;грн</h6>
 			</div>
 		</div>

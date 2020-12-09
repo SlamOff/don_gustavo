@@ -8,6 +8,9 @@
 	body.sushi .product_card--final {
 		margin: 2rem 0;
 	}
+	.card_total--table_column:first-of-type {
+		flex: 0 0 17rem;
+	}
 	section h3 br,
 	.region .region_col {
 		-webkit-box-flex: 0;
@@ -66,12 +69,38 @@
 	.product_card--promo_dropdown {
 		text-indent: 3rem;
 	}
+	.card_total .product_card--added {
+		width: 250px;
+		height: 95px;
+		margin-top: 10px;
+	}
 }
 
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 991px) {
+	.footer:after {
+		background-size: auto 100%;
+	}
+	.card_total .product_card--added {
+		width: 170px;
+		height: 80px;
+		margin-top: 3px;
+	}
+	.card_total--table_column:first-of-type {
+		flex: 0 0 15rem;
+	}
 	footer .row div  {
 		text-align: center;
+	}
+	.card_total--table_column:first-of-type {
+		flex: 0 0 15rem;
+	}
+	.footer .map .menu li {
+		display: inline-block;
+		margin: 0 20px;
+	}
+	.footer .map .menu li:after {
+		display: none;
 	}
 	body.sushi .product_card--final {
 		margin: 1.8rem 0;
@@ -290,8 +319,53 @@
 	.product_item--pict {
 		height: auto;
 	}
-	body.sushi .product_card:before {
+	.product_card.category-sushi .product_card--final, .product_card.category-sushi-ru .product_card--final {
+		margin: 5px 0;
+	}
+	.card_total .product_card--added {
+		margin-top: 40px;
+		width: 300px;
+	}
+	.promotion--pict {
+		height: auto;
+	}
+	.promotion--pict img {
+		height: auto;
+		max-width: 100%;
+		object-fit: unset;
+	}
+	.often .slick-dots {
+		left: 0;
+	}
+	.additives {
+		padding-top: 3rem;
+	}
+	.product_card--info.variable .product_card--outcome_result {
+		left: 0;
+		bottom: 30px;
+	}
+	.woocommerce .product_card div.product form.cart .button {
+		margin-top: 35px;
+		margin-left: -webkit-calc(50% - 13.5rem);
+		margin-left: -moz-calc(50% - 13.5rem);
+		margin-left: -ms-calc(50% - 13.5rem);
+		margin-left: calc(50% - 13.5rem);
+	}
+	.product_card.category-sushi:before, .product_card.category-sushi-ru:before {
 		background: none;
+	}
+	.btn_main, .woocommerce div.product .product_item form.cart .button, .woocommerce .product_item a.button, .woocommerce .drink-item a.button, .woocommerce .product button.button.single_add_to_cart_button {
+		font-size: 14px;
+	}
+	.product_card.category-sushi .product_card--outcome, .product_card.category-sushi-ru .product_card--outcome {
+		-webkit-box-orient: horizontal;
+   		-webkit-box-direction: normal;
+    	-webkit-flex-direction: column;
+    	-ms-flex-direction: column;
+    	flex-direction: column;
+	}
+	.product_card.category-sushi .product_card--outcome .button, .product_card.category-sushi-ru .product_card--outcome .button {
+		margin-top: 0!important;
 	}
 	body.sushi .product_item--descr p {
 		margin-bottom: 0;
@@ -337,9 +411,6 @@
 	}
 	.shopping_cart img {
 		height: 20px;
-	}
-	.footer:after {
-		background-size: auto 100%;
 	}
 	.footer p {
 		font-size: 14px;
@@ -523,7 +594,8 @@
 		height: 70px;
 	}
 	.phone,
-	.lang {
+	.lang,
+	.header .widget_polylang {
 		display: none;
 	}
 	.mobile_menu_overlay .lang {
@@ -543,10 +615,13 @@
 		font-weight: bold;
 		border-color: #1d2228;
 	}
-	.mobile_menu_overlay .menu ul {
+	.mobile_menu_overlay .menu-main-menu-container ul,
+	.mobile_menu_overlay .menu-main_menu_ru-container ul {
 		display: block;
+		background: transparent;
 	}
-	.mobile_menu_overlay .menu ul li {
+	.mobile_menu_overlay .menu-main-menu-container ul li,
+	.mobile_menu_overlay .menu-main_menu_ru-container ul li {
 		width: 50%;
 		float: left;
 		text-align: center;
@@ -554,10 +629,18 @@
 		font-weight: normal;
 		margin-bottom: 20px;
 		height: 70px;
+		position: relative;
 	}
-	.mobile_menu_overlay .menu ul li:after {
+	.mobile_menu_overlay .menu-main-menu-container ul li:after,
+	.mobile_menu_overlay .menu-main_menu_ru-container ul li:after {
+		content: "";
 		display: block;
 		height: 40px;
+		position: absolute;
+		width: 1px;
+		background-color: #dedede;
+		right: 0;
+		bottom: 0;
 	}
 	.mobile_menu_overlay .mobile_phone h6 {
 		font-size: 16px;
@@ -570,17 +653,22 @@
 		color: #4b4b4b;
 		display: block;
 	}
-	.mobile_menu_overlay .menu ul li.active {
+	.mobile_menu_overlay .menu-main-menu-container ul li.current-menu-item,
+	.mobile_menu_overlay .menu-main_menu_ru-container ul li.current-menu-item {
 		font-weight: bold;
+		color: #d24f44;
 	}
-	.mobile_menu_overlay .menu ul li i {
+	.mobile_menu_overlay .menu-main-menu-container ul li i,
+	.mobile_menu_overlay .menu-main_menu_ru-container ul li i {
 		display: block;
 		font-size: 32px;
+		margin-bottom: 5px;
 	}
 	.shopping_cart {
 		margin: 0 30px 0 auto;
 	}
-	.mobile_menu_overlay .menu {
+	.mobile_menu_overlay .menu-main-menu-container,
+	.mobile_menu_overlay .menu-main_menu_ru-container {
 		padding: 40px 0 20px;
 		background-color: transparent;
 		max-width: 270px;
@@ -669,6 +757,9 @@
 	.product .section_title {
 		margin-bottom: 5px;
 	}
+	.drink .section_title {
+		margin-bottom: 30px;
+	}
 	.section_title {
 		font-size: 18px;
 	}
@@ -677,7 +768,7 @@
 	}
 	.product_item--descr p {
 		font-size: 14px;
-		line-height: 14px;
+		line-height: 15px;
 		max-width: 220px;
 	}
 	.product_item--price .price {
@@ -964,9 +1055,6 @@
 		font-size: 18px;
 		text-align: center;
 	}
-	.card_total--table_column:first-of-type h6 {
-		display: none;
-	}
 	.card .card_form .section_title {
 		display: none;
 	}
@@ -976,6 +1064,23 @@
 	.card_total--table_column:last-of-type h6,
 	.card_total--table_column:nth-of-type(2) h6 {
 		margin-bottom: 16px;
+	}
+	.widget_polylang ul {
+		display: block;
+	}
+	.widget_polylang ul li {
+		width: 48px;
+		height: 48px;
+		line-height: 46px;
+		font-size: 14px;
+	}
+	.widget_polylang ul li:first-of-type {
+		margin-right: 25px;
+	}
+	.widget_polylang ul li.current-lang {
+		color: #1d2228;
+		font-weight: bold;
+		border-color: #1d2228;
 	}
 	.card_total--table_column:nth-of-type(3) h6 {
 		margin-bottom: 10px;
@@ -989,6 +1094,9 @@
 	}
 	.card_total--table_footer h5 {
 		font-size: 18px;
+	}
+	.menu ul li.current-menu-item {
+
 	}
 	.card_total--table_footer i {
 		font-size: 14px;
@@ -1049,6 +1157,14 @@
 	.card_total--table_column h6.mobile {
 		display: block;
 	}
+	.product_card.category-sushi .product_card--outcome_result, .product_card.category-sushi-ru .product_card--outcome_result {
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 2rem;
+	}
+	.review {
+		padding-top: 0;
+	}
 }
 @media only screen and (max-width : 580px) {
 	.footer .contact_item {
@@ -1087,6 +1203,10 @@
 	.made_by p, .copyright p {
 		font-size: 14px;
 	}
+	.card_total .product_card--added {
+		margin-top: 40px;
+		width: 200px;
+	}
 	.share .timer__item {
 		margin-right: 1rem;
 		width: 60px;
@@ -1123,11 +1243,36 @@
 		font-size: 2.4rem;
 		line-height: 3.4rem;
 	}
+	.card_total .product_card--added {
+		margin-top: 18px;
+		width: 170px;
+	}
 	section h3 {
 		font-size: 2.4rem;
 	}
 	.phone_icon {
-		margin-left: 0;
+		margin-left: -8px;
+	}
+	.product_item--price .price {
+		font-size: 20px;
+	}
+	.shopping_cart {
+		margin: 0 15px 0 auto;
+	}
+	.product_item--weight, .product_item--size {
+		padding: 0 10px;
+		font-size: 12px;
+	}
+	.product_item--size span.second_size {
+		margin-left: 7px;
+	}
+	.product_item--weight:after {
+		transform: skew(20deg);
+		right: -8px;
+	}
+	.product_item--size:after {
+		transform: skew(-20deg);
+		left: -8px;
 	}
 }
 

@@ -66,7 +66,7 @@ $translations = new GustavoTranslations();
 				if($variations) {
 					$re = '/\D+/gm'
 					?>
-					<h4 class="product_card--descr"><?php echo $product->get_variation_description();  ?></h4>
+					<h4 class="product_card--descr"><?php echo $product->get_short_description();  ?></h4>
 				<div class="product_card--size ">
 					<?php
 					$activePrice = 0;
@@ -91,7 +91,9 @@ $translations = new GustavoTranslations();
 				</div>
 					<span id="variationprice" data-price="<?php echo $activePrice;?>"></span>
 				<?php } else { ?>
-					<h4 class="product_card--descr"><?php echo $product->get_short_description();  ?></h4>
+					<h4 class="product_card--descr"><?php echo $product->get_short_description();  ?>
+						<div class="product_card--weight mobile"><span><?php echo $product->weight ?></span> г</div>
+					</h4>
 				<?php }
 				if($isPizza) {
 					?>

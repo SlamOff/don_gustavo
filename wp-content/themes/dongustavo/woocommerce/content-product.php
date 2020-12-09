@@ -48,7 +48,7 @@ if($variations) {
 	$i = 0;
 	$len = count($variations);
 	foreach($variations as $variation) {
-//		var_dump($variation['display_price']);
+//		var_dump($variation['variation_id']);
 //		die;
 		$isLast = '';
 		$isActive = '';
@@ -67,7 +67,7 @@ if($variations) {
 		}
 		$dataWeight .= $variation['weight'].$coma;
 		$dataPrice .= $variation['display_price'].$coma;
-		$divSize .= '<span class="size_btn'.$isActive.$isLast.'" data-size="'.wc_attribute_label($variation['attributes']['attribute_pa_size']).'">'.str_replace('-', ' ', wc_attribute_label($variation['attributes']['attribute_pa_size'])).'</span>';
+		$divSize .= '<span class="size_btn'.$isActive.$isLast.'" data-variation_id="'.$variation['variation_id'].'" data-size="'.wc_attribute_label($variation['attributes']['attribute_pa_size']).'">'.str_replace('-', ' ', wc_attribute_label($variation['attributes']['attribute_pa_size'])).'</span>';
 		$i ++;
 	}
 	$divWeight .= '</div>';
@@ -119,7 +119,7 @@ if($variations) {
 			<div class="product_item--pict">
 				<div class="added_to_cart"><img src="<?php echo get_template_directory_uri(); ?>/img/shopping-cart.png" alt=""></div>
 
-				<img class="product-image" src="<?php the_post_thumbnail_url(); ?>"  alt="<?php the_title(); ?>" />
+				<img class="product-image" src="<?php the_post_thumbnail_url('product_thumbnail'); ?>"  alt="<?php the_title(); ?>" />
 				<?php if($variations) {
 					echo $divWeight.$divSize;
 				}  ?>
@@ -133,16 +133,10 @@ if($variations) {
 				<a href="<?php echo $product->get_permalink(); ?>"><?php echo $translations->getTranslation(["plp", $category, 'add_components'])?>&gt;&gt;&gt;</a>
 				<?php endif; ?>
 			</div>
-			<?php
-//				if($isPizza) {
-					echo $divPrice;
-//				} else {
-//					echo ''
-//				}
-
-			 ?>
+			<?php echo $divPrice; ?>
 			<div class="choose">
 				<div class="g-quantity">
+					<div class="preloader"></div>
 					<div class="btn_minus btn_action">-</div>
 					<input disabled="" type="text" value="1" name="quantity">
 					<div class="btn_plus btn_action">+</div>

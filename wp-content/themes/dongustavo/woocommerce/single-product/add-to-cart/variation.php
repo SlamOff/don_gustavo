@@ -14,15 +14,16 @@ defined( 'ABSPATH' ) || exit;
 require_once get_template_directory() . '/classes/class-GustavoTranslations.php';
 $translations = new GustavoTranslations();
 global $product;
-$variations = $product->get_available_variations();
+
+$variations = (!empty($product)) ? $product->get_available_variations() : [];
 ?>
 <script type="text/template" id="tmpl-variation-template">
 
 	<?php  if(is_single()) : ?>
 
 			<div class="product_card--outcome_result<?php if(count($variations) == 1) : ?> hidden<?php endif; ?>">
-				<h5 class="section_title"><?php echo $translations->getTranslation(["global", 'total']); ?></h5>
-				<div class="woocommerce-variation-price">{{{ data.variation.price_html }}}</div>
+				<h5 class="section_title"><?php echo $translations->getTranslation(["global", 'total']); ?>:&nbsp;</h5>
+				<div class="woocommerce-variation-price">{{{ data.variation.price_html }}}</div>&nbsp;
 				грн
 			</div>
 

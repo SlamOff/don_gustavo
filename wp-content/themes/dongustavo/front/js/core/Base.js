@@ -121,8 +121,19 @@ class Base {
 		})
 	}
 	
+	homeLink() {
+		let link = this.lang === 'uk' ? '/' : '/ru/главная/';
+		jQuery('.header_wrapper .logo > a').attr('href', link);
+	}
+	
+	cartLink() {
+		let link = this.lang === 'uk' ? '/cart' : '/ru/cart-ru';
+		jQuery('.header_wrapper .shopping_cart').attr('href', link);
+	}
+	
 	_init() {
 		this.menuIcons();
-		
+		this.homeLink();
+		this.cartLink();
 	}
 }

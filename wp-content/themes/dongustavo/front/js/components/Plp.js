@@ -23,6 +23,7 @@ class Plp extends Base {
 				$thisbutton
 					.addClass('invisible')
 					.closest('.product_item').find('.added_to_cart').addClass('visible');
+				this.cartLink();
 				this.updateQuantity($thisbutton, data.product_id)
 			})
 			return false;
@@ -41,15 +42,11 @@ class Plp extends Base {
 	}
 	
 	changeVariations() {
-		let form,
-			variationsSelect,
-			variationsButtons,
-			addToCartButton;
 		jQuery('.variations_form').each((i, el) => {
-			form = jQuery(el);
-			addToCartButton = form.find('.single_add_to_cart_button');
-			variationsSelect = jQuery('.variations', form).find('select');
-			variationsButtons = form.parents('.product_item').find('.js-size').children('.size_btn');
+			let form = jQuery(el);
+			let addToCartButton = form.find('.single_add_to_cart_button');
+			let variationsSelect = jQuery('.variations', form).find('select');
+			let variationsButtons = form.parents('.product_item').find('.js-size').children('.size_btn');
 			variationsButtons.on('click', (e) => {
 				e.preventDefault();
 				let $this = jQuery(e.currentTarget);
@@ -71,6 +68,7 @@ class Plp extends Base {
 					variationsSelect
 						.val($this.data('size'))
 						.trigger('change');
+					form.find('.variation_id').val($this.data('variation_id'))
 					addToCartButton
 						.removeClass('invisible')
 						.closest('.product_item').find('.added_to_cart').removeClass('visible');
@@ -90,8 +88,11 @@ class Plp extends Base {
 		
 		wrapper.find('.btn_action').on('click', e => {
 			let $element = jQuery(e.currentTarget);
+			let preloader = $element.parent().find('.preloader');
 			let type = ($element.hasClass('btn_minus')) ? 'minus' : 'plus';
+			preloader.show();
 			this.updateQuantityRequest(type, product_id, response => {
+				preloader.hide();
 				jQuery(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash]);
 				let newVal = (type === 'plus') ? parseInt(input.val()) + 1 : parseInt(input.val()) - 1;
 				if(newVal === 0) {

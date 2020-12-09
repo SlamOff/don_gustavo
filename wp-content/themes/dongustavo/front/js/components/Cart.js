@@ -10,11 +10,27 @@ class Cart extends Base {
 	
 	submitForm() {
 		let data = this.$form.serializeArray();
+		let utmData = localStorage.getItem('UTM');
+		let utm = [];
+		if(utmData) {
+			try {
+				utm = JSON.parse(utmData);
+			} catch (e) {
+				utm.push(['status=UTM_Empty']);
+			}
+		}
+		
 		jQuery.ajax({
 			type: 'POST',
 			dataType: 'json',
 			url: '/wp-admin/admin-ajax.php',
-			data: {action : 'dongustavo_cart_ajax_order', userData : data }
+			data: {action : 'dongustavo_cart_ajax_order', userData : data, utm: utm},
+			success: (msg) => {
+				if(msg.status === 'ok') {
+					if(this.lang === 'uk') {}
+					document.location.href = (this.lang === 'uk') ? '/thanks_page' : '/ru/thanks_page-ru';
+				}
+			}
 		})
 	}
 	
@@ -114,16 +130,76 @@ class Cart extends Base {
 		});
 	}
 	
-	getCartTotalSum() {
+	getCartTotalSum(callback) {
 		jQuery.ajax({
 			type: 'POST',
 			dataType: 'json',
 			url: '/wp-admin/admin-ajax.php',
 			data: {action: 'dongustavo_cart_total', getTotal: 1},
 		}).done((data) => {
+			if(typeof callback === 'function') {
+				callback(data);
+			}
 			jQuery('#totalPrice').html(data.html);
 			jQuery('#total_price').html(data.html);
 			
+		})
+	}
+	
+	changeQuantity() {
+		let cartItem = null;
+		let inputs = jQuery('.quantity input');
+		inputs.attr('readonly', 'readonly');
+		jQuery('.btn_action').on('click', e => {
+			let $this = jQuery(e.currentTarget);
+			let type = $this.hasClass('btn_plus') ? 'plus' : 'minus';
+			let input = $this.siblings('.quantity').find('input');
+			let quy = parseInt(input.val());
+			let wrapper = $this.parent();
+			let preloader = wrapper.find('.preloader');
+			cartItem = $this.parents('.cart_item');
+			let newTotalPrice = 0;
+			if (type === 'minus') {
+				$this.toggleClass('disabled', quy <= 2)
+				if(quy === 1) {
+					return;
+				}
+				quy --;
+			} else {
+				if(quy === 1) {
+					wrapper.find('.btn_minus').removeClass('disabled');
+				}
+				quy ++;
+			}
+			newTotalPrice = parseFloat(wrapper.data('price')) * quy;
+			preloader.show();
+			input.val(quy);
+			
+			cartItem.find('.js-sub_total .amount bdi').text(newTotalPrice);
+			this.updateQuantityRequest(type, wrapper.data('product_id'), () => {
+				this.getCartTotalSum(() => {
+					preloader.hide();
+				})
+			})
+		})
+	}
+	
+	deleteItem() {
+		jQuery('.delete').on('click', e => {
+			e.preventDefault();
+			let $this = jQuery(e.currentTarget);
+			jQuery.ajax({
+				url: $this.attr('href'),
+				type: 'get',
+				success: (msg) => {
+					$this.parents('.cart_item').remove();
+					this.getCartTotalSum(data => {
+						if(data.count === 0) {
+							document.location.href = '/';
+						}
+					});
+				}
+			})
 		})
 	}
 	
@@ -140,5 +216,7 @@ class Cart extends Base {
 				});
 			}
 		});
+		this.changeQuantity()
+		this.deleteItem();
 	}
 }

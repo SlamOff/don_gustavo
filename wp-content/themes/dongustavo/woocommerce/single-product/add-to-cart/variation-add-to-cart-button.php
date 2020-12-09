@@ -42,18 +42,7 @@ require_once get_template_directory() . '/classes/class-Actions.php';
 				<div class="btn_plus btn_action btn_plus_product_card js-qty js-plus">+</div>
 			</div>
 		</div>
-		<div class="product_card--promo">
-			<div class="product_card--promo_dropdown">
-				<input id="promo" type="hidden" name="promo">
-				<span class="arrow"></span>
-				<div class="product_card--promo_value"><?php echo $translations->getTranslation(["global", 'promo']); ?></div>
-				<?php
-				$actions = new Actions('list');
-				echo $actions->getCoupons();
-				?>
-			</div>
-		</div>
-		<?php ?>
+	<?php ?>
 	</div>
 	<?php endif; ?>
 	<button type="submit" class="single_add_to_cart_button button alt"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>

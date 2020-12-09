@@ -6,11 +6,15 @@ class Cart {
 	private $user;
 	private $order;
 	private $sendData = array();
+	private $cart;
+	private $utm;
 
-	public function __construct($user, $order) {
+	public function __construct($user, $order, $cart, $utm) {
 		$this->user = $user;
 		$this->order = $order;
 		$this->sender = new TelegramApi();
+		$this->cart = $cart;
+		$this->utm = $utm;
 	}
 
 	private function getAdditions($name) {
@@ -53,6 +57,7 @@ class Cart {
 		array_push($this->sendData, $userData);
 	}
 
+
 	/**
 	 * @return mixed
 	 */
@@ -60,10 +65,24 @@ class Cart {
 		return $this->user;
 	}
 
+	private function prepareUTM() {
+		$utmData = array();
+		if(!empty($this->utm) and is_array($this->utm)) {
+			foreach($this->utm as $utm) {
+				array_push($utmData, explode('=', $utm));
+			}
+			array_push($this->sendData, $utmData);
+		}
+	}
+
 	public function send() {
 		$this->prepareOrder();
 		$this->prepareUser();
+		$this->prepareUTM();
 		$this->sender->setData($this->sendData);
-		return $this->sender->send();
+		$this->sender->send();
+		$this->cart->empty_cart();
+		echo '{"status": "ok"}';
+		die;
 	}
 }

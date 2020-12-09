@@ -118,8 +118,13 @@ class Pdp extends Base {
 			let $button = jQuery(e.currentTarget);
 			if($button.hasClass('js-plus')) {
 				this.currentCount ++;
+				$buttons.not($button).removeClass('disabled');
 			} else {
+				if(this.currentCount == 2) {
+					$button.addClass('disabled');
+				}
 				if(this.currentCount < 2) {
+					
 					return false;
 				}
 				this.currentCount --;
@@ -144,7 +149,13 @@ class Pdp extends Base {
 			}
 			
 		});
+		
+		function addReload() {
+			jQuery(document.body).on('added_to_cart', () => {
+				document.location.reload();
+			})
+		}
+		
+		jQuery('.single_add_to_cart_button').on('click', addReload);
 	}
-	
-
 }

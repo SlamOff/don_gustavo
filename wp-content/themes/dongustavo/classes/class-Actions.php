@@ -5,6 +5,7 @@ class Actions {
 	private $query = [];
 	private $type = 'slider';
 	private $translations;
+	private $langPrefix;
 
 	public function __construct($type = 'slider') {
 		$this->query = [
@@ -15,6 +16,7 @@ class Actions {
 		];
 		$this->type = $type;
 		$this->translations = new GustavoTranslations();
+		$this->langPrefix = $this->translations->currentLang !== 'uk' ? '_ru' : '';
 	}
 
 
@@ -26,11 +28,11 @@ class Actions {
 						<div class="slider_wrapper main_slider_wrapper">
 							<div class="main_slider">';
 			foreach($posts as $post) {
-				$html .= '<img src="' . get_field('slider_image', $post->ID) .'" alt="">';
+				$html .= '<img src="' . get_field('slider_image'.$this->langPrefix, $post->ID) .'" alt="">';
 			}
 			$html .= '</div>
 						<div class="container main_slider_container">
-							<a href="promotion.html" class="btn_main">Подробнее</a>
+							<a href="'. $this->translations->getTranslation(['global', 'actionsUrl']) .'" class="btn_main">'. $this->translations->getTranslation(['global', 'details']) .'</a>
 							<div class="arrows">
 								<div class="prev"></div>
 								<div class="next"></div>
@@ -53,11 +55,11 @@ class Actions {
                 <div class="line"></div>
                 <div class="col-sm-6">
                     <div class="promotion--pict">
-						<img src="' . get_field('list_image', $post->ID) .'" alt="">
+						<img src="' . get_field('list_image'.$this->langPrefix, $post->ID) .'" alt="">
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <div class="promotion--text">' . get_field('description', $post->ID) .'</div>
+                    <div class="promotion--text">' . get_field('description'.$this->langPrefix, $post->ID) .'</div>
                 </div>
 			</div>';
 			}

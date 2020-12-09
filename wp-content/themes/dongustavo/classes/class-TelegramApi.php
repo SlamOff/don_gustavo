@@ -12,19 +12,6 @@ class TelegramApi {
 	}
 
 	private function sendToApi() {
-//		$response = array(
-//			'chat_id' => $this->chatId,
-//			'parse_mode' => 'html',
-//			'text' => $this->msg
-//		);
-//		$ch = curl_init('https://api.telegram.org/bot'. $this->token .'/sendMessage');
-//		curl_setopt($ch, CURLOPT_POST, 1);
-//		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//		curl_setopt($ch, CURLOPT_POSTFIELDS, $response);
-//		curl_setopt($ch, CURLOPT_HEADER, false);
-//		$result = curl_exec($ch);
-//		curl_close($ch);
-//		return $result;
 		return fopen("https://api.telegram.org/bot{$this->token}/sendMessage?chat_id={$this->chatId}&parse_mode=html&text={$this->msg}", "r");
 	}
 
@@ -65,6 +52,12 @@ class TelegramApi {
 		$this->msg .= '<b>Клиент:</b>%0A';
 		foreach($this->data[1] as $k=>$value) {
 			$this->msg .= '<b>'.$names[$k].'</b>: '.$value.'%0A';
+		}
+		if(!empty($this->data[2])) {
+			$this->msg .= '<b>UTM:</b>%0A';
+			foreach($this->data[2] as $utm) {
+				$this->msg .= '<b>'.$utm[0].'</b>: '.$utm[1].'%0A';
+			}
 		}
 	}
 

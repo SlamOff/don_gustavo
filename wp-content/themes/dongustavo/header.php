@@ -58,9 +58,6 @@
 				</div>
 
 				<?php
-				//		wp_body_open();
-//				$WC_Cart = new WC_Cart();
-//				var_dump(WC()->instance()->cart->get_cart_item_quantities());
 				if ( is_active_sidebar( 'header-widgets' ) ) :
 					dynamic_sidebar( 'header-widgets' );
 				endif; ?>

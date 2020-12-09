@@ -135,7 +135,8 @@ function dongustavo_cart_ajax_order() {
 	$cart = WC()->instance()->cart;
 	$userData = $_POST['userData'];
 	$order = $cart->get_cart();
-	$cartClass = new Cart($userData, $order);
+	$utm = $_POST['utm'];
+	$cartClass = new Cart($userData, $order, $cart, $utm);
 
 	echo wp_send_json($cartClass->send());
 
@@ -161,8 +162,29 @@ add_action('wp_ajax_nopriv_dongustavo_cart_total', 'dongustavo_cart_total');
 
 function dongustavo_cart_total() {
 	$ret = [
-		'html' => WC()->cart->get_cart_total()
+		'html' => WC()->cart->get_cart_total(),
+		'count' => WC()->cart->get_cart_contents_count()
 	];
 	echo wp_send_json($ret);;
 	wp_die();
+}
+
+/**
+ * Change number of products that are displayed per page (shop page)
+ */
+add_filter( 'loop_shop_per_page', 'new_loop_shop_per_page', 20 );
+
+function new_loop_shop_per_page( $cols ) {
+	// $cols contains the current number of products per page based on the value stored on Options -> Reading
+	// Return the number of products you wanna show per page.
+	$cols = 40;
+	return $cols;
+}
+
+add_action("template_redirect", 'redirection_function');
+function redirection_function(){
+	global $woocommerce;
+	if( is_cart() && WC()->cart->cart_contents_count == 0){
+		wp_safe_redirect( '/' );
+	}
 }

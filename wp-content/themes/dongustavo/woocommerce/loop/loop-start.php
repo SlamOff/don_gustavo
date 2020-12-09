@@ -39,6 +39,8 @@ $_title = $translations->getTranslation(["plp", $category, 'title'], ['count' =>
 <?php if(in_array($category, ['drinks', 'drinks-ru'])): ?>
 <div class="drink">
 <?php endif; ?>
-<div class="product product-list">
+<div class="product product-list <?php echo $category;?>">
 	<div class="container">
+		<?php if(!empty($_title)): ?>
 		<h3 class="section_title"><?php echo $_title; ?></h3>
+		<?php endif; ?>

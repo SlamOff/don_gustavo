@@ -28,15 +28,6 @@ $translations = new GustavoTranslations();
 $additions = new Additives();
 $addresses = new Addresses();
 
-function getAdditions($name) {
-	$posts = get_posts(array(
-		'numberposts'	=> 1,
-		'post_type'		=> 'addings',
-		'meta_key'		=> 'adding',
-		'meta_value'	=> $name
-	));
-	return $posts[0]->post_title;
-}
 $appliedCoupon = WC()->cart->get_applied_coupons();
 if(!empty($appliedCoupon) and !empty($appliedCoupon[0])) {
 	$appliedCoupon = stripslashes($appliedCoupon[0]);
@@ -128,8 +119,8 @@ if(!empty($appliedCoupon) and !empty($appliedCoupon[0])) {
 							</div>
 							<div class="col-sm-6">
 								<div class="form_total_price">
-									<?php echo $translations->getTranslation(['global', 'total']) ?>:
-									<span><span id="totalPrice"><?php echo  WC()->cart->get_cart_total(); ?></span></span> грн
+									<?php echo $translations->getTranslation(['global', 'total']) ?>:&nbsp;
+									<span><span id="totalPrice"><?php echo  WC()->cart->get_cart_total(); ?></span>&nbsp;грн</span>
 									<input type="hidden" name="totalSum" id="totalSum">
 								</div>
 							</div>
@@ -197,7 +188,8 @@ if(!empty($appliedCoupon) and !empty($appliedCoupon[0])) {
 							<div class="card_total--table_column">
 								<h6 class="desktop"><?php echo $translations->getTranslation(['global', 'count_full']) ?></h6>
 								<h6 class="mobile"><?php echo $translations->getTranslation(['global', 'count_mobile']) ?></h6>
-								<div class="quantity">
+								<div class="quantity cart-quantity" data-price="<?php echo $_product->get_price() ; ?>" data-product_id="<?php echo $product_id;?>">
+									<div class="preloader"></div>
 									<div class="btn_minus btn_minus_card card_btn btn_action disabled">-</div>
 									<?php
 									if ( $_product->is_sold_individually() ) {
@@ -221,20 +213,21 @@ if(!empty($appliedCoupon) and !empty($appliedCoupon[0])) {
 									<div class="btn_plus btn_plus_card card_btn btn_action">+</div>
 								</div>
 							</div>
-							<div class="card_total--table_column">
-								<h6><?php echo $translations->getTranslation(['global', 'total']) ?></h6>
+							<div class="card_total--table_column js-sub_total">
+								<h6><?php echo $translations->getTranslation(['global', 'total']) ?>:&nbsp;</h6>
 								<?php
 								echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key ); // PHPCS: XSS ok.
 								?>
+								<strong>&nbsp;грн</strong>
 							</div>
 						</div>
 <?php
 							}
 						}
-//					new Cart($cartProducts);
+
 						?>
 						<div class="card_total--table_footer">
-							<h5><?php echo $translations->getTranslation(['global', 'total']) ?>: <span><span id="total_price"><?php echo  WC()->cart->get_cart_total(); ?></span> грн</span></h5>
+							<h5><?php echo $translations->getTranslation(['global', 'total']) ?>:&nbsp;<span><span id="total_price"><?php echo  WC()->cart->get_cart_total(); ?></span> грн</span></h5>
 							<i><?php echo $translations->getTranslation(['cart', 'order_description']) ?></i>
 						</div>
 					</div>
