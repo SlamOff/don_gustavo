@@ -149,7 +149,6 @@ button, button:focus, button:hover, input, .thumbnail, .slick-slide, img, ul, li
 .section_title {
 	font-size: 3rem;
 	text-align: center;
-	margin-top: 0;
 	color: #1d2228;
 	font-weight: bold;
 	margin: 0;
@@ -813,8 +812,15 @@ label.error {
 	bottom: 6rem;
 	left: 15px;
 }
-.main_slider img.slick-slide {
+.main_slider img.slick-slide,
+.main_slider picture.slick-slide {
 	max-width: 100%;
+}
+
+.slick-slide img {
+	display: block;
+	max-width: 100%;
+	height: auto;
 }
 .main_slider {
 	max-width: 100%;

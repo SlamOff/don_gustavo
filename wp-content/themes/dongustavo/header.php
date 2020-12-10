@@ -19,7 +19,8 @@
 		<meta charset="<?php bloginfo( 'charset' ); ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" >
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
+		<link rel="preload" href="<?php echo get_stylesheet_uri() ?>" as="style">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
 		<?php wp_head(); ?>
 
 	</head>

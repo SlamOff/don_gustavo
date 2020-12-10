@@ -200,11 +200,11 @@ function dongustavo_register_styles() {
 //	wp_enqueue_style( 'dongustavo-slick-theme', get_template_directory_uri(). '/front/libs/slick/slick-theme.css', array(), $theme_version );
 //	//END Libs
 
+//	wp_enqueue_style( 'dongustavo-fonts-style', 'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,400;0,500;0,600;0,700;0,900;1,400;1,700&display=swap', null, $theme_version, 'all' );
 	wp_enqueue_style( 'dongustavo-style', get_stylesheet_uri(), array(), $theme_version );
 
 	// Add print CSS.
 //	wp_enqueue_style( 'dongustavo-media-style', get_template_directory_uri() . '/media.css', null, $theme_version, 'all' );
-//	wp_enqueue_style( 'dongustavo-fonts-style', get_template_directory_uri() . '/fonts.css', null, $theme_version, 'all' );
 
 
 	if ( ( ! is_admin() ) && is_singular() && comments_open() && get_option( 'thread_comments' ) ) {

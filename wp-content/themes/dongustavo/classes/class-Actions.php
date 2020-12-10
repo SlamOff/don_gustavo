@@ -28,7 +28,12 @@ class Actions {
 						<div class="slider_wrapper main_slider_wrapper">
 							<div class="main_slider">';
 			foreach($posts as $post) {
-				$html .= '<img src="' . get_field('slider_image'.$this->langPrefix, $post->ID) .'" alt="">';
+				$image = get_field('slider_image'.$this->langPrefix, $post->ID);
+				$html .= '
+				<picture>
+					<source srcset="'.$image['sizes']['slider_mobile'].'" media="(max-width : 400px)">
+					<img width="1500" height="550" src="'. $image['sizes']['slider'] .'" alt="'.$post->post_title.'">
+				</picture>';
 			}
 			$html .= '</div>
 						<div class="container main_slider_container">

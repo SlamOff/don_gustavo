@@ -118,8 +118,10 @@ if($variations) {
 			<h4 class="product_item--name"><?php the_title(); ?></h4>
 			<div class="product_item--pict">
 				<div class="added_to_cart"><img src="<?php echo get_template_directory_uri(); ?>/img/shopping-cart.png" alt=""></div>
-
-				<img class="product-image" src="<?php the_post_thumbnail_url('product_thumbnail'); ?>"  alt="<?php the_title(); ?>" />
+				<picture class="product-image">
+					<source srcset="<?php the_post_thumbnail_url('product_thumbnail_mobile'); ?>" media="(max-width : 400px)">
+					<img class="product-image"  width="360" height="320" src="<?php the_post_thumbnail_url('product_thumbnail'); ?>"  alt="<?php the_title(); ?>">
+				</picture>
 				<?php if($variations) {
 					echo $divWeight.$divSize;
 				}  ?>

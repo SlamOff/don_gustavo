@@ -3,7 +3,7 @@
 
 class TelegramApi {
 	protected $token = '1424949574:AAE0s-rK5y2y5MpUKdJiJMtkBuZs-R2rVuA';
-	protected $chatId = '-429036341';
+	protected $chatId = '-430850796';
 	private $msg = '';
 	private $data;
 
