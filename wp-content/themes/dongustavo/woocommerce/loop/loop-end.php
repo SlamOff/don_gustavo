@@ -18,5 +18,13 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+global $wp_query;
+$cat_obj = $wp_query->get_queried_object();
+
+$category = (is_front_page()) ? 'pizza' : $cat_obj->slug;
 ?>
+
+<?php if(in_array($category, ['drinks', 'drinks-ru'])): ?>
+	</div>
+<?php endif; ?>
 </div></div>

@@ -1,9 +1,11 @@
 <?php
-
+require_once get_template_directory() . '/classes/class-GustavoTranslations.php';
 
 class Actions {
 	private $query = [];
 	private $type = 'slider';
+	private $translations;
+	private $langPrefix;
 
 	public function __construct($type = 'slider') {
 		$this->query = [
@@ -13,7 +15,8 @@ class Actions {
 			'posts_per_page' => 0
 		];
 		$this->type = $type;
-
+		$this->translations = new GustavoTranslations();
+		$this->langPrefix = $this->translations->currentLang !== 'uk' ? '_ru' : '';
 	}
 
 
@@ -25,11 +28,16 @@ class Actions {
 						<div class="slider_wrapper main_slider_wrapper">
 							<div class="main_slider">';
 			foreach($posts as $post) {
-				$html .= '<img src="' . get_field('slider_image', $post->ID) .'" alt="">';
+				$image = get_field('slider_image'.$this->langPrefix, $post->ID);
+				$html .= '
+				<picture>
+					<source srcset="'.$image['sizes']['slider_mobile'].'" media="(max-width : 400px)">
+					<img width="1500" height="550" src="'. $image['sizes']['slider'] .'" alt="'.$post->post_title.'">
+				</picture>';
 			}
 			$html .= '</div>
 						<div class="container main_slider_container">
-							<a href="promotion.html" class="btn_main">Подробнее</a>
+							<a href="'. $this->translations->getTranslation(['global', 'actionsUrl']) .'" class="btn_main">'. $this->translations->getTranslation(['global', 'details']) .'</a>
 							<div class="arrows">
 								<div class="prev"></div>
 								<div class="next"></div>
@@ -40,6 +48,7 @@ class Actions {
 		}
 		return $html;
 	}
+
 	private function renderListHtml() {
 		$posts = get_posts($this->query);
 		$html = '';
@@ -51,16 +60,34 @@ class Actions {
                 <div class="line"></div>
                 <div class="col-sm-6">
                     <div class="promotion--pict">
-						<img src="' . get_field('list_image', $post->ID) .'" alt="">
+						<img src="' . get_field('list_image'.$this->langPrefix, $post->ID) .'" alt="">
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <div class="promotion--text">' . get_field('description', $post->ID) .'</div>
+                    <div class="promotion--text">' . get_field('description'.$this->langPrefix, $post->ID) .'</div>
                 </div>
 			</div>';
 			}
 			$html .= '</div>
 				</div>';
+		}
+		return $html;
+	}
+
+	public function getCoupons() {
+		$html = null;
+		$posts = get_posts($this->query);
+		switch($this->type) {
+			case 'array':
+				$html = $posts;
+				break;
+			case 'list':
+				$html = '<ul class="product_card--promo_list">';
+				foreach($posts as $post) {
+					$html .= "<li>{$post->post_title}</li>";
+				}
+				$html .= '</ul>';
+				break;
 		}
 		return $html;
 	}

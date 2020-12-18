@@ -36,10 +36,11 @@ if($count < 10) {
 $translations = new GustavoTranslations();
 $_title = $translations->getTranslation(["plp", $category, 'title'], ['count' => $count])
 ?>
-
-<div class="product">
+<?php if(in_array($category, ['drinks', 'drinks-ru'])): ?>
+<div class="drink">
+<?php endif; ?>
+<div class="product product-list <?php echo $category;?>">
 	<div class="container">
+		<?php if(!empty($_title)): ?>
 		<h3 class="section_title"><?php echo $_title; ?></h3>
-<!--	</div>-->
-<!--</div>-->
-<!--<ul class="products columns---><?php //echo esc_attr( wc_get_loop_prop( 'columns' ) ); ?><!--">-->
+		<?php endif; ?>

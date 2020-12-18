@@ -1,4 +1,20 @@
 <?php
+require_once get_template_directory() . '/classes/class-Cart.php';
+
+
+$currentLang = 'uk';
+$langs = pll_the_languages( array( 'raw' => 1 ) );
+if(!empty($langs) and is_array($langs)) {
+	foreach($langs as $l) {
+		if($l['current_lang']) {
+			$currentLang = $l['locale'];
+		}
+	}
+}
+
+
+
+
 add_action('wp_ajax_woocommerce_ajax_add_to_cart', 'woocommerce_ajax_add_to_cart');
 add_action('wp_ajax_nopriv_woocommerce_ajax_add_to_cart', 'woocommerce_ajax_add_to_cart');
 
@@ -86,4 +102,89 @@ function woocommerce_ajax_change_quantity() {
 	}
 
 	wp_die();
+}
+
+// To change add to cart text on single product page
+add_filter( 'woocommerce_product_single_add_to_cart_text', 'woocommerce_custom_single_add_to_cart_text' );
+function woocommerce_custom_single_add_to_cart_text() {
+	global $currentLang;
+	if($currentLang == 'uk') {
+		return __( 'В кошик', 'woocommerce' );
+	} else {
+		return __( 'В корзину', 'woocommerce' );
+	}
+
+}
+
+// To change add to cart text on product archives(Collection) page
+add_filter( 'woocommerce_product_add_to_cart_text', 'woocommerce_custom_product_add_to_cart_text' );
+function woocommerce_custom_product_add_to_cart_text() {
+	global $currentLang;
+	if($currentLang == 'uk') {
+		return __( 'В кошик', 'woocommerce' );
+	} else {
+		return __( 'В корзину', 'woocommerce' );
+	}
+}
+
+add_action('wp_ajax_dongustavo_cart_ajax_order', 'dongustavo_cart_ajax_order');
+add_action('wp_ajax_nopriv_dongustavo_cart_ajax_order', 'dongustavo_cart_ajax_order');
+
+
+function dongustavo_cart_ajax_order() {
+	$cart = WC()->instance()->cart;
+	$userData = $_POST['userData'];
+	$order = $cart->get_cart();
+	$utm = $_POST['utm'];
+	$cartClass = new Cart($userData, $order, $cart, $utm);
+
+	echo wp_send_json($cartClass->send());
+
+	wp_die();
+}
+
+add_action('wp_ajax_dongustavo_cart_apply_coupon', 'dongustavo_cart_apply_coupon');
+add_action('wp_ajax_nopriv_dongustavo_cart_apply_coupon', 'dongustavo_cart_apply_coupon');
+
+function dongustavo_cart_apply_coupon() {
+	$ret = '{"status": 0}';
+	if(!empty($_POST['couponcode'])) {
+		$couponcode = stripslashes($_POST['couponcode']);
+		WC()->cart->remove_coupons();
+		$ret = '{"status" :'.WC()->cart->add_discount( $couponcode ).'}';
+	}
+	echo $ret;
+	wp_die();
+}
+
+add_action('wp_ajax_dongustavo_cart_total', 'dongustavo_cart_total');
+add_action('wp_ajax_nopriv_dongustavo_cart_total', 'dongustavo_cart_total');
+
+function dongustavo_cart_total() {
+	$ret = [
+		'html' => WC()->cart->get_cart_total(),
+		'count' => WC()->cart->get_cart_contents_count()
+	];
+	echo wp_send_json($ret);;
+	wp_die();
+}
+
+/**
+ * Change number of products that are displayed per page (shop page)
+ */
+add_filter( 'loop_shop_per_page', 'new_loop_shop_per_page', 20 );
+
+function new_loop_shop_per_page( $cols ) {
+	// $cols contains the current number of products per page based on the value stored on Options -> Reading
+	// Return the number of products you wanna show per page.
+	$cols = 40;
+	return $cols;
+}
+
+add_action("template_redirect", 'redirection_function');
+function redirection_function(){
+	global $woocommerce;
+	if( is_cart() && WC()->cart->cart_contents_count == 0){
+		wp_safe_redirect( '/' );
+	}
 }

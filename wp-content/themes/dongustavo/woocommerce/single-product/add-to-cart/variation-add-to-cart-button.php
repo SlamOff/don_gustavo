@@ -10,10 +10,21 @@
 defined( 'ABSPATH' ) || exit;
 
 global $product;
+$translations = new GustavoTranslations();
+require_once get_template_directory() . '/classes/class-Actions.php';
 ?>
 <div class="woocommerce-variation-add-to-cart variations_button">
 	<?php do_action( 'woocommerce_before_add_to_cart_button' ); ?>
+	<?php if(	is_single()): ?>
+	<div class="product_card--final">
+		<div class="product_card--quantity">
+			<span><?php echo $translations->getTranslation(["global", 'count']); ?></span>
+			<div class="quantity">
+				<div class="btn_minus btn_action btn_minus_product_card js-qty js-minus disabled">-</div>
 
+
+
+	<?php endif; ?>
 	<?php
 	do_action( 'woocommerce_before_add_to_cart_quantity' );
 
@@ -27,9 +38,14 @@ global $product;
 
 	do_action( 'woocommerce_after_add_to_cart_quantity' );
 	?>
-
+	<?php if(	is_single()): ?>
+				<div class="btn_plus btn_action btn_plus_product_card js-qty js-plus">+</div>
+			</div>
+		</div>
+	<?php ?>
+	</div>
+	<?php endif; ?>
 	<button type="submit" class="single_add_to_cart_button button alt"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
-
 	<?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
 
 	<input type="hidden" name="add-to-cart" value="<?php echo absint( $product->get_id() ); ?>" />
